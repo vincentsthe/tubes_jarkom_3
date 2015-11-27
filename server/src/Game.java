@@ -17,6 +17,10 @@ public class Game {
         this.playerList = playerList;
         this.winCount = 5;
         this.currentTurn = 0;
+
+        for (int i = 0; i < playerList.size(); i++) {
+            playerList.get(i).start();
+        }
     }
 
     public void start() {
