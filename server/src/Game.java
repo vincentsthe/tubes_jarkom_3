@@ -19,37 +19,6 @@ public class Game {
         this.currentTurn = 0;
     }
 
-    public int getWinner() {
-        final int dy[] = {-1, -1, 0, 1, 1, 1, 0, -1};
-        final int dx[] = {0, 1, 1, 1, 0, -1, -1, -1};
-
-        int boardSize = board.getBoardSize();
-
-        for (int i = 0; i < boardSize; i++) {
-            for (int j = 0; j < boardSize; j++) {
-                if (board.getTileAtPosition(i, j) != -1) {
-                    for (int z = 0; z < 8; z++) {
-                        int yn = i;
-                        int xn = j;
-
-                        int streak = 0;
-                        while ((streak < winCount) && ((yn >= 0) && (yn < boardSize)) && ((xn >= 0) && (xn < boardSize)) && (board.getTileAtPosition(i, j) == board.getTileAtPosition(yn, xn))) {
-                            streak++;
-                            yn += dy[z];
-                            xn += dx[z];
-                        }
-
-                        if (streak == winCount) {
-                            return board.getTileAtPosition(i, j);
-                        }
-                    }
-                }
-            }
-        }
-
-        return -1;
-    }
-
     public void start() {
         for (int i = 0; i < playerList.size(); i++) {
             playerList.get(i).setGame(this);
@@ -72,12 +41,24 @@ public class Game {
         }
     }
 
-    private void broadcastBoard() {
-        Gson gson = new Gson();
-        String boardJson = gson.toJson(board);
+    public boolean haveWinner() {
+        return (board.getConsecutiveBid(winCount) != -1);
+    }
 
-        for (int i = 0; i < playerList.size(); i++) {
-            playerList.get(i).sendMessage(boardJson);
+    private void broadcastBoard() {
+        if (!haveWinner()) {
+            Gson gson = new Gson();
+            String boardJson = gson.toJson(board);
+
+            for (int i = 0; i < playerList.size(); i++) {
+                playerList.get(i).sendMessage(boardJson);
+            }
+        } else {
+            int winner = board.getConsecutiveBid(winCount);
+
+            for (int i = 0; i < playerList.size(); i++) {
+                playerList.get(i).sendMessage("Player " + winner + " WIN!!!");
+            }
         }
     }
 }
