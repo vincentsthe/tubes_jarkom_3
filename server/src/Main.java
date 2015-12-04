@@ -1,7 +1,8 @@
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -12,17 +13,48 @@ public class Main {
             ServerSocket serverSocket = new ServerSocket(port);
             serverSocket.setSoTimeout(10000);
 
-            GameSetter gameSetter = new GameSetter(serverSocket);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            String command = "";
-            while (!command.equals("start")) {
-                command = reader.readLine();
-            }
+            PlayerConnection playerConnection = new PlayerConnection(serverSocket);
 
-            Game game = gameSetter.createGame();
-            game.start();
+            System.out.println("Waiting for player to join.....");
+            playerConnection.start();
         } catch (IOException e) {
             System.out.println("Error establishing socket");
+        }
+    }
+}
+
+class PlayerConnection extends Thread {
+
+    private ServerSocket serverSocket;
+
+    private List<PlayerThread> playerThreadList;
+
+    public PlayerConnection(ServerSocket serverSocket) {
+        this.playerThreadList = new ArrayList<>();
+        this.serverSocket = serverSocket;
+    }
+
+    @Override
+    public void run() {
+        Socket socket = null;
+
+        while (true) {
+            System.out.println("loop");
+            try {
+                if (serverSocket == null) {
+                    System.out.println("server socket null");
+                }
+                socket = serverSocket.accept();
+            } catch (IOException ex) {
+                System.out.println("Error connecting to client...");
+            }
+
+            if (Thread.interrupted()) {
+                return;
+            }
+            PlayerThread playerThread = new PlayerThread(socket);
+            playerThread.start();
+            playerThreadList.add(playerThread);
         }
     }
 }

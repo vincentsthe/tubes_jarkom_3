@@ -17,10 +17,6 @@ public class Game {
         this.playerList = playerList;
         this.winCount = 5;
         this.currentTurn = 0;
-
-        for (int i = 0; i < playerList.size(); i++) {
-            playerList.get(i).start();
-        }
     }
 
     public void start() {
@@ -29,7 +25,14 @@ public class Game {
         }
     }
 
-    public void move(int y, int x, int player) {
+    public void move(int y, int x, PlayerThread playerThread) {
+        int player = 0;
+        for (int i = 0; i < playerList.size(); i++) {
+            if (playerThread == playerList.get(i)) {
+                player = i;
+            }
+        }
+
         if ((player == currentTurn) && (board.isTileEmpty(y, x))) {
             board.placeBidAtTile(player, y, x);
 

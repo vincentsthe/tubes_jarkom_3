@@ -1,30 +1,50 @@
+import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PlayerThread extends Thread {
 
     private Socket connection;
 
-    private int playerNumber;
+    private String username;
 
     private boolean connected;
+
+    private Room room;
 
     private Game game;
 
     private DataOutputStream out;
 
-    public PlayerThread(Socket connection, int playerNumber) {
+    public PlayerThread(Socket connection) {
         this.connection = connection;
-        this.playerNumber = playerNumber;
         connected = true;
         this.game = null;
     }
 
-    public int getPlayerNumber() {
-        return playerNumber;
+    public String getUsername() {
+        if (username == null) {
+            return "";
+        } else {
+            return username;
+        }
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
     public boolean isConnected() {
@@ -45,7 +65,7 @@ public class PlayerThread extends Thread {
             br = new BufferedReader(new InputStreamReader(in));
             out = new DataOutputStream(connection.getOutputStream());
         } catch (IOException e) {
-            System.out.println("Player " + playerNumber + " disconnected....");
+            System.out.println("Player " + username + " disconnected....");
             connected = false;
             return;
         }
@@ -53,19 +73,68 @@ public class PlayerThread extends Thread {
         String line;
         while (true) {
             try {
-                line = br.readLine();
+                line = null;
+                while (line == null) {
+                    line = br.readLine();
+                }
+                System.out.println("+++++++++++++++");
+                System.out.println(line);
+                System.out.println("+++++++++++++++");
 
                 try {
                     JSONObject json = new JSONObject(line);
-                    game.move(json.getInt("y"), json.getInt("x"), playerNumber);
+                    processRequest(json);
                 } catch (JSONException e) {
                     System.out.println("Failed parsing input from client...");
                 }
             } catch (IOException e) {
-                System.out.println("Player " + playerNumber + " disconnected....");
+                System.out.println("Player " + username + " disconnected....");
                 connected = false;
                 return;
             }
+        }
+    }
+
+    private void processRequest(JSONObject request) {
+        try {
+            String messageType = request.getString("message_type");
+            String message = "";
+            if (request.has("message")) {
+                message = request.getString("message");
+            }
+
+            if (messageType.equals("register")) {
+                setUsername(message);
+            } else if (messageType.equals("list_room")) {
+                List<String> roomListName = Room.roomList.stream().map(m -> m.getName()).collect(Collectors.toList());
+                String roomListJson = new Gson().toJson(roomListName);
+
+                JSONObject json = new JSONObject();
+                json.put("message_type", "list_room");
+                json.put("message", roomListJson);
+                sendMessage(json);
+            } else if (messageType.equals("create_room")) {
+                Room room = new Room(message);
+            } else if (messageType.equals("start_room")) {
+                getRoom().startGame();
+            } else if (messageType.equals("join_room")) {
+                setRoom(Room.getRoomByRoomName(messageType));
+                getRoom().registerPlayer(this);
+            } else if (messageType.equals("list_player_room")) {
+                setRoom(Room.getRoomByRoomName(messageType));
+                List<String> userList = getRoom().getPlayers().stream().map(m -> m.getUsername()).collect(Collectors.toList());
+                String userListJson = new Gson().toJson(userList);
+
+                JSONObject json = new JSONObject();
+                json.put("message_type", "list_room");
+                json.put("message", userListJson);
+                sendMessage(json);
+            } else if (messageType.equals("move")) {
+                JSONObject position = new JSONObject(message);
+                getRoom().getGame().move(position.getInt("y"), position.getInt("x"), this);
+            }
+        } catch (JSONException ex) {
+            System.out.println("Invalid request");
         }
     }
 
@@ -74,7 +143,7 @@ public class PlayerThread extends Thread {
             out.writeBytes(message.toString());
             out.writeByte('\n');
         } catch (IOException e) {
-            System.out.println("Error sending data to player " + playerNumber + "....");
+            System.out.println("Error sending data to player " + username + "....");
         }
     }
 
@@ -83,7 +152,7 @@ public class PlayerThread extends Thread {
             out.writeBytes(message);
             out.writeByte('\n');
         } catch (IOException e) {
-            System.out.println("Error sending data to player " + playerNumber + "....");
+            System.out.println("Error sending data to player " + username + "....");
         }
     }
 }
