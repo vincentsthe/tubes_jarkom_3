@@ -7,7 +7,9 @@ package gomogomogui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,6 +31,10 @@ import javafx.util.Pair;
  * @author Jessica
  */
 public class JoinRoomsController implements Initializable {
+    
+    private ObservableList<Pair<String, Integer>> allData = FXCollections.observableArrayList();
+    private ArrayList<Pair<String,Integer>> joinRooms = new ArrayList<>();
+    
     @FXML
     private Button backButton;
     @FXML
@@ -37,30 +43,37 @@ public class JoinRoomsController implements Initializable {
     private TableColumn<Pair<String, Integer>, String> roomName;
     @FXML
     private TableColumn<Pair<String, Integer>, Integer> numberPlayer;
+   
+    
 
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        Pair<String, Integer> player1 = new Pair("Room1", 1);
-        Pair<String, Integer> player2 = new Pair("Room2", 2);
-        Pair<String, Integer> player3 = new Pair("Room3", 3);
-        Pair<String, Integer> player4 = new Pair("Room4", 4);
-        Pair<String, Integer> player5 = new Pair("Room5", 5);
-        Pair<String, Integer> player6 = new Pair("Room6", 6);
-        Pair<String, Integer> player7 = new Pair("Room7", 7);
+    public void initialize(URL url, ResourceBundle rb) { 
+        Pair<String, Integer> room1 = new Pair("Room1", "1");
+        Pair<String, Integer> room2 = new Pair("Room2", 2);
+        Pair<String, Integer> room3 = new Pair("Room3", 3);
+        Pair<String, Integer> room4 = new Pair("Room4", 4);
+        Pair<String, Integer> room5 = new Pair("Room5", 5);
+        Pair<String, Integer> room6 = new Pair("Room6", 6);
+        Pair<String, Integer> room7 = new Pair("Room7", 7);
+        
+        joinRooms.add(room1);
+        joinRooms.add(room2);
+        joinRooms.add(room3);
+        joinRooms.add(room4);
+        joinRooms.add(room5);
+        joinRooms.add(room6);
+        joinRooms.add(room7);
         
         roomName.setCellValueFactory(new PropertyValueFactory<>("first"));
         numberPlayer.setCellValueFactory(new PropertyValueFactory<>("second"));
-        ObservableList<Pair<String,Integer>> allData = tableRoom.getItems();
-        allData.add(player1);
-        allData.add(player2);
-        allData.add(player3);
-        allData.add(player4);
-        allData.add(player5);
-        allData.add(player6);
-        allData.add(player7);
+        allData = tableRoom.getItems();
+        
+        for(int i = 0; i < joinRooms.size(); i++){
+            allData.add(joinRooms.get(i));
+        }
     }    
 
     @FXML
