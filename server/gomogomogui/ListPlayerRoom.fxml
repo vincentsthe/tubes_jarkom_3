@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="gomogomogui.ListPlayerRoomController">
+   <children>
+      <ImageView layoutX="-1.0">
+         <image>
+            <Image url="@listPlayer.png" />
+         </image>
+      </ImageView>
+      <TableView layoutX="416.0" layoutY="186.0" prefHeight="390.0" prefWidth="446.0">
+        <columns>
+          <TableColumn prefWidth="444.0" text="List Player Name" />
+        </columns>
+      </TableView>
+      <Button fx:id="startButton" layoutX="470.0" layoutY="610.0" mnemonicParsing="false" onAction="#startButtonAction" prefHeight="51.0" prefWidth="135.0" text="START" textAlignment="CENTER" textFill="#009865">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+      <Button fx:id="backButton" layoutX="660.0" layoutY="610.0" mnemonicParsing="false" onAction="#backButtonAction" prefHeight="51.0" prefWidth="135.0" text="BACK" textFill="#039967">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
