@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.net.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<Pane minHeight="700.0" minWidth="1300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gomogomogui.HomeController">
+   <children>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1298.0">
+         <children>
+            <ImageView layoutX="-1.0">
+               <image>
+                  <Image url="@Home.png" />
+               </image>
+            </ImageView>
+            <Label id="playerName" fx:id="playerName" layoutX="539.0" layoutY="192.0" prefHeight="70.0" prefWidth="285.0" text="Player Name" textFill="#491000">
+               <font>
+                  <Font size="48.0" />
+               </font></Label>
+            <TextField id="playerField" fx:id="nickName" layoutX="463.0" layoutY="279.0" prefHeight="51.0" prefWidth="417.0" promptText="Nick Name">
+               <font>
+                  <Font size="24.0" />
+               </font></TextField>
+            <Label fx:id="goToMenu" layoutX="628.0" layoutY="501.0" onMouseClicked="#goToMenuAction" text="GO" textFill="#fca903">
+               <font>
+                  <Font name="Findet Nemo" size="74.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</Pane>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gomogomogui.MenuController">
+   <children>
+      <Pane>
+         <children>
+            <ImageView>
+               <image>
+                  <Image url="@menu.png" />
+               </image>
+            </ImageView>
+            <Button id="createRoom" fx:id="goToCreateRoom" layoutX="778.0" layoutY="273.0" mnemonicParsing="false" onAction="#goToCreateRoomAction" onMouseClicked="#goToCreateRoomAction" prefHeight="58.0" prefWidth="341.0" text="Create Room" textAlignment="CENTER" textFill="#006fdd">
+               <font>
+                  <Font name="Findet Nemo" size="42.0" />
+               </font>
+            </Button>
+            <Button fx:id="goToJoinRoom" layoutX="778.0" layoutY="397.0" mnemonicParsing="false" onAction="#goToJoinRoomAction" onMouseClicked="#goToJoinRoomAction" prefHeight="67.0" prefWidth="341.0" text="Join Room" textFill="#006fdd">
+               <font>
+                  <Font name="Findet Nemo" size="41.0" />
+               </font>
+            </Button>
+            <Button id="backButton" fx:id="goToHome" layoutX="778.0" layoutY="527.0" mnemonicParsing="false" onAction="#goToHomeAction" onMouseClicked="#goToHomeAction" prefHeight="83.0" prefWidth="341.0" text="Back" textFill="#006fdd">
+               <font>
+                  <Font name="Findet Nemo" size="42.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
