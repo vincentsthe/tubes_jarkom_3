@@ -15,10 +15,10 @@
             <Image url="@joinroom.png" />
          </image>
       </ImageView>
-      <TableView layoutX="348.0" layoutY="256.0" prefHeight="407.0" prefWidth="610.0">
+      <TableView fx:id="tableRoom" layoutX="348.0" layoutY="256.0" prefHeight="407.0" prefWidth="610.0">
         <columns>
           <TableColumn fx:id="roomName" prefWidth="293.0" text="Room's Name" />
-            <TableColumn fx:id="numberPlayer" prefWidth="277.0" text="Number of Players" />
+            <TableColumn fx:id="numberPlayer" prefWidth="316.0" text="Number of Players" />
         </columns>
       </TableView>
       <Button fx:id="backButton" layoutX="1078.0" layoutY="622.0" mnemonicParsing="false" onAction="#backButtonAction" prefHeight="51.0" prefWidth="135.0" text="BACK" textFill="#039967">

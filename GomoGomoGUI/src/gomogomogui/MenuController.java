@@ -50,7 +50,7 @@ public class MenuController implements Initializable {
       Stage stage = (Stage) goToHome.getScene().getWindow();
       Scene scene  = new Scene(parent);
       stage.setScene(scene);
-      stage.setTitle("Home");
+      stage.setTitle("Join Rooms");
       stage.show();
     }
 

@@ -8,17 +8,17 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="gomogomogui.ListPlayerRoomController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gomogomogui.ListPlayerRoomController">
    <children>
       <ImageView layoutX="-1.0">
          <image>
             <Image url="@listPlayer.png" />
          </image>
       </ImageView>
-      <TableView layoutX="416.0" layoutY="186.0" prefHeight="390.0" prefWidth="446.0">
+      <TableView fx:id="tablePlayer" layoutX="416.0" layoutY="186.0" prefHeight="390.0" prefWidth="446.0">
         <columns>
-          <TableColumn prefWidth="444.0" text="List Player Name" />
+          <TableColumn fx:id="number" prefWidth="53.0" text="No" />
+          <TableColumn fx:id="listPlayerName" prefWidth="392.0" text="Player Name" />
         </columns>
       </TableView>
       <Button fx:id="startButton" layoutX="470.0" layoutY="610.0" mnemonicParsing="false" onAction="#startButtonAction" prefHeight="51.0" prefWidth="135.0" text="START" textAlignment="CENTER" textFill="#009865">

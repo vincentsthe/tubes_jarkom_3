@@ -43,13 +43,13 @@ public class JoinRoomsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Pair<String, Integer> player1 = new Pair("Room1", "1");
-        Pair<String, Integer> player2 = new Pair("Room2", "2");
-        Pair<String, Integer> player3 = new Pair("Room3", "3");
-        Pair<String, Integer> player4 = new Pair("Room4", "4");
-        Pair<String, Integer> player5 = new Pair("Room5", "5");
-        Pair<String, Integer> player6 = new Pair("Room6", "2");
-        Pair<String, Integer> player7 = new Pair("Room7", "1");
+        Pair<String, Integer> player1 = new Pair("Room1", 1);
+        Pair<String, Integer> player2 = new Pair("Room2", 2);
+        Pair<String, Integer> player3 = new Pair("Room3", 3);
+        Pair<String, Integer> player4 = new Pair("Room4", 4);
+        Pair<String, Integer> player5 = new Pair("Room5", 5);
+        Pair<String, Integer> player6 = new Pair("Room6", 6);
+        Pair<String, Integer> player7 = new Pair("Room7", 7);
         
         roomName.setCellValueFactory(new PropertyValueFactory<>("first"));
         numberPlayer.setCellValueFactory(new PropertyValueFactory<>("second"));

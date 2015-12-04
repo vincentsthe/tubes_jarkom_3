@@ -56,7 +56,15 @@ public class CreateRoomController implements Initializable {
     }
 
     @FXML
-    private void goToCreateAction(ActionEvent event) {
+    private void goToCreateAction(ActionEvent event) throws IOException {
+      ((Node) (event.getSource())).getScene().getWindow().hide();
+      Parent parent = FXMLLoader.load(getClass().getResource("ListPlayerRoom.fxml"));  
+      
+      Stage stage = (Stage) roomName.getScene().getWindow();
+      Scene scene  = new Scene(parent);
+      stage.setScene(scene);
+      stage.setTitle("List Player");
+      stage.show();
     }
     
 }
