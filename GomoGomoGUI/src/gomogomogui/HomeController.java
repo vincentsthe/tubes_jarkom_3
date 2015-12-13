@@ -37,8 +37,12 @@ public class HomeController implements Initializable {
     private void goToMenuAction(MouseEvent event) throws IOException {
       ((Node) (event.getSource())).getScene().getWindow().hide();
       Parent parent = FXMLLoader.load(getClass().getResource("Menu.fxml"));  
-      
+    
       Stage stage = (Stage) nickName.getScene().getWindow();
+      
+      String username = nickName.getText();
+      Connection.register(username);
+      
       Scene scene  = new Scene(parent);
       stage.setScene(scene);
       stage.setTitle("Menu");

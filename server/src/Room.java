@@ -39,10 +39,13 @@ public class Room {
 
     public Game startGame() {
         game = gameSetter.createGame();
+        for (PlayerThread player: gameSetter.getPlayerList()) {
+            player.notifyGameStart();
+        }
         return game;
     }
 
-    public static Room getRoomByRoomName(String name) {
+    public static synchronized Room getRoomByRoomName(String name) {
         for (int i = 0; i < roomList.size(); i++) {
             if (roomList.get(i).name.equals(name)) {
                 return roomList.get(i);

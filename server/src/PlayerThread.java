@@ -77,15 +77,13 @@ public class PlayerThread extends Thread {
                 while (line == null) {
                     line = br.readLine();
                 }
-                System.out.println("+++++++++++++++");
-                System.out.println(line);
-                System.out.println("+++++++++++++++");
 
                 try {
                     JSONObject json = new JSONObject(line);
                     processRequest(json);
                 } catch (JSONException e) {
                     System.out.println("Failed parsing input from client...");
+                    System.out.println(line);
                 }
             } catch (IOException e) {
                 System.out.println("Player " + username + " disconnected....");
@@ -102,6 +100,7 @@ public class PlayerThread extends Thread {
             if (request.has("message")) {
                 message = request.getString("message");
             }
+            System.out.println(request.toString());
 
             if (messageType.equals("register")) {
                 setUsername(message);
@@ -115,26 +114,47 @@ public class PlayerThread extends Thread {
                 sendMessage(json);
             } else if (messageType.equals("create_room")) {
                 Room room = new Room(message);
+                room.registerPlayer(this);
             } else if (messageType.equals("start_room")) {
                 getRoom().startGame();
             } else if (messageType.equals("join_room")) {
-                setRoom(Room.getRoomByRoomName(messageType));
+                Room room = Room.getRoomByRoomName(message);
+                setRoom(room);
                 getRoom().registerPlayer(this);
             } else if (messageType.equals("list_player_room")) {
-                setRoom(Room.getRoomByRoomName(messageType));
+                setRoom(Room.getRoomByRoomName(message));
                 List<String> userList = getRoom().getPlayers().stream().map(m -> m.getUsername()).collect(Collectors.toList());
                 String userListJson = new Gson().toJson(userList);
 
                 JSONObject json = new JSONObject();
                 json.put("message_type", "list_room");
                 json.put("message", userListJson);
+                System.out.println(json.toString());
                 sendMessage(json);
             } else if (messageType.equals("move")) {
                 JSONObject position = new JSONObject(message);
                 getRoom().getGame().move(position.getInt("y"), position.getInt("x"), this);
+            } else if (messageType.equals("request_board")) {
+                Room room = Room.getRoomByRoomName(message);
+                Game game = room.getGame();
+                Gson gson = new Gson();
+                String boardJson = gson.toJson(game.getBoard());
+
+                sendMessage(boardJson);
             }
         } catch (JSONException ex) {
             System.out.println("Invalid request");
+        }
+    }
+
+    public void notifyGameStart() {
+        try {
+            JSONObject json = new JSONObject();
+            json.put("message_type", "start_game");
+            out.writeBytes(json.toString());
+            out.writeByte('\n');
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -7,7 +7,9 @@ package gomogomogui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,8 +22,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 /**
  * FXML Controller class
@@ -46,29 +48,46 @@ public class ListPlayerRoomController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        Pair<Integer, String> player1 = new Pair(1, "aaa");
-        Pair<Integer, String> player2 = new Pair(2, "bbb");
-        Pair<Integer, String> player3 = new Pair(3, "ccc");
-        Pair<Integer, String> player4 = new Pair(4, "ddd");
-        Pair<Integer, String> player5 = new Pair(5, "eee");
-        Pair<Integer, String> player6 = new Pair(6, "fff");
-        Pair<Integer, String> player7 = new Pair(7, "ggg");
         
         number.setCellValueFactory(new PropertyValueFactory<>("first"));
         listPlayerName.setCellValueFactory(new PropertyValueFactory<>("second"));
         ObservableList<Pair<Integer,String>> allData = tablePlayer.getItems();
-        allData.add(player1);
-        allData.add(player2);
-        allData.add(player3);
-        allData.add(player4);
-        allData.add(player5);
-        allData.add(player6);
-        allData.add(player7);
+        
+        List<String> playerList = Connection.listRoomPlayer(Variable.currentRoom);
+        
+        for (int i = 0; i < playerList.size(); i++) {
+            allData.add(new Pair(i+1, playerList.get(i)));
+        }
+        
+        (new Thread() {
+            @Override
+            public void run() {
+                Connection.waitForStart();
+                Platform.runLater(() -> {
+                    try {
+                        System.out.println("starting...");
+                        Parent parent = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));  
+
+                        Connection.startRoom(Variable.currentRoom);
+
+                        Stage stage = (Stage) tablePlayer.getScene().getWindow();
+                        Scene scene  = new Scene(parent);
+                        stage.setScene(scene);
+                        stage.setTitle("Gomo Gomo");
+                        stage.show();
+                    } catch (IOException e) {
+
+                    }
+                });
+            }
+        }).start();
     }    
 
     @FXML
-    private void startButtonAction(ActionEvent event) {
+    private void startButtonAction(ActionEvent event) throws IOException {
+        System.out.println("clicked");
+        Connection.startRoom(Variable.currentRoom);
+        System.out.println("endd");
     }
 
     @FXML

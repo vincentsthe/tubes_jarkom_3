@@ -25,8 +25,17 @@ public class Game {
         }
     }
 
+    public Board getBoard() {
+        return board;
+    }
+
+    public List<PlayerThread> getPlayerList() {
+        return playerList;
+    }
+
     public void move(int y, int x, PlayerThread playerThread) {
-        int player = 0;
+        System.out.println(x + " " + y);
+        int player = -1;
         for (int i = 0; i < playerList.size(); i++) {
             if (playerThread == playerList.get(i)) {
                 player = i;
@@ -43,29 +52,10 @@ public class Game {
                 currentTurn++;
                 currentTurn %= playerList.size();
             }
-
-            broadcastBoard();
         }
     }
 
     public boolean haveWinner() {
         return (board.getConsecutiveBid(winCount) != -1);
-    }
-
-    private void broadcastBoard() {
-        if (!haveWinner()) {
-            Gson gson = new Gson();
-            String boardJson = gson.toJson(board);
-
-            for (int i = 0; i < playerList.size(); i++) {
-                playerList.get(i).sendMessage(boardJson);
-            }
-        } else {
-            int winner = board.getConsecutiveBid(winCount);
-
-            for (int i = 0; i < playerList.size(); i++) {
-                playerList.get(i).sendMessage("Player " + winner + " WIN!!!");
-            }
-        }
     }
 }

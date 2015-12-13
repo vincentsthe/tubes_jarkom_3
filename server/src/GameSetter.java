@@ -12,7 +12,7 @@ public class GameSetter {
     }
 
     public Game createGame() {
-        Game game = new Game(playerList, 15);
+        Game game = new Game(playerList, 20);
 
         return game;
     }
@@ -22,6 +22,15 @@ public class GameSetter {
     }
 
     public void addPlayer(PlayerThread playerThread) {
-        playerList.add(playerThread);
+        boolean found = false;
+        for (int i = 0; i < playerList.size(); i++) {
+            if (playerList.get(i) == playerThread) {
+                found = true;
+            }
+        }
+
+        if (!found) {
+            playerList.add(playerThread);
+        }
     }
 }

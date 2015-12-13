@@ -11,7 +11,6 @@ public class Main {
 
         try {
             ServerSocket serverSocket = new ServerSocket(port);
-            serverSocket.setSoTimeout(10000);
 
             PlayerConnection playerConnection = new PlayerConnection(serverSocket);
 
@@ -39,12 +38,15 @@ class PlayerConnection extends Thread {
         Socket socket = null;
 
         while (true) {
-            System.out.println("loop");
             try {
                 if (serverSocket == null) {
                     System.out.println("server socket null");
                 }
                 socket = serverSocket.accept();
+                if (socket == null) {
+                    System.out.printf("Socket null");
+                }
+                System.out.println("A player is connected");
             } catch (IOException ex) {
                 System.out.println("Error connecting to client...");
             }
