@@ -40,6 +40,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
+import org.json.JSONObject;
 
 /**
  *
@@ -949,14 +950,33 @@ public class FXMLDocumentController implements Initializable {
         (new Thread() {
             @Override
             public void run() {
+                boolean done = false;
                 while (true) {
-                    Board currentBoard = Connection.requestBoard(Variable.currentRoom);
-                    
-                    updateBoard(currentBoard);
                     try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        System.out.println("Exception");
+                        String response = Connection.requestBoard(Variable.currentRoom);
+                        JSONObject jsonResponse = new JSONObject(response);
+                        System.out.println(jsonResponse.toString());
+
+                        if (jsonResponse.getString("message_type").equals("board")) {
+                            Gson gson = new Gson();
+                            Board board = gson.fromJson(new JSONObject(response).get("message").toString(), Board.class);
+
+                            updateBoard(board);
+                        } else if (jsonResponse.getString("message_type").equals("winner") && !done) {
+                            done = true;
+                            String winner = jsonResponse.getString("message");
+                            Platform.runLater(() -> {
+                                System.out.println(Variable.username + " " + winner);
+                                if (Variable.username.equals(winner)) {
+                                    winMessage();
+                                } else {
+                                    loseMessage();
+                                }
+                            });
+                        }
+                        Thread.sleep(400);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
                 }
             }

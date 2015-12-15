@@ -94,6 +94,7 @@ public class PlayerThread extends Thread {
     }
 
     private void processRequest(JSONObject request) {
+
         try {
             String messageType = request.getString("message_type");
             String message = "";
@@ -138,9 +139,22 @@ public class PlayerThread extends Thread {
                 Room room = Room.getRoomByRoomName(message);
                 Game game = room.getGame();
                 Gson gson = new Gson();
-                String boardJson = gson.toJson(game.getBoard());
 
-                sendMessage(boardJson);
+                if (!game.haveWinner()) {
+                    String boardJson = gson.toJson(game.getBoard());
+
+                    JSONObject json = new JSONObject();
+                    json.put("message_type", "board");
+                    json.put("message", boardJson);
+
+                    sendMessage(json.toString());
+                } else {
+                    JSONObject json = new JSONObject();
+                    json.put("message_type", "winner");
+                    json.put("message", game.getWinner());
+
+                    sendMessage(json.toString());
+                }
             }
         } catch (JSONException ex) {
             System.out.println("Invalid request");

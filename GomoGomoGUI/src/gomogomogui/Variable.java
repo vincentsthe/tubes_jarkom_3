@@ -12,6 +12,8 @@ import java.util.List;
  * @author vincentsthe
  */
 public class Variable {
+    public static String username;
+    
     public static String currentRoom;
     
     public static List<String> playerList;

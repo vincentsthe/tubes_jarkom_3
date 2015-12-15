@@ -145,7 +145,7 @@ public class Connection {
         }
     }
     
-    public static Board requestBoard(String roomName) {
+    public static String requestBoard(String roomName) {
         try {
             JSONObject json = new JSONObject();
             json.put("message_type", "request_board");
@@ -154,21 +154,26 @@ public class Connection {
             sendMessage(json.toString());
             
             String response = readMessage();
-            Board board = (new Gson()).fromJson(response, Board.class);
             
-            return board;
+            return response;
         } catch (Exception e) {
             System.out.println("Json error");
-            return null;
+            return "";
         }
     }
     
     public static Board waitForBoard() {
         try {
             String response = readMessage();
-            Gson gson = new Gson();
-            Board board = gson.fromJson(new JSONObject(response).get("message").toString(), Board.class);
-            return board;
+            JSONObject json = new JSONObject(response);
+            
+            if (json.getString("message_type").equals("board")) {
+                Gson gson = new Gson();
+                Board board = gson.fromJson(new JSONObject(response).get("message").toString(), Board.class);
+                return board;
+            } else {
+                return null;
+            }
         } catch (Exception e) {
             System.out.println("JSON error");
             return null;

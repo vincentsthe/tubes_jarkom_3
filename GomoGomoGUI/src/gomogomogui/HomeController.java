@@ -41,6 +41,7 @@ public class HomeController implements Initializable {
       Stage stage = (Stage) nickName.getScene().getWindow();
       
       String username = nickName.getText();
+      Variable.username = username;
       Connection.register(username);
       
       Scene scene  = new Scene(parent);

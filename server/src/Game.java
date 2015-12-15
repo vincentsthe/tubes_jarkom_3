@@ -58,4 +58,8 @@ public class Game {
     public boolean haveWinner() {
         return (board.getConsecutiveBid(winCount) != -1);
     }
+
+    public String getWinner() {
+        return playerList.get(board.getConsecutiveBid(winCount)).getUsername();
+    }
 }
