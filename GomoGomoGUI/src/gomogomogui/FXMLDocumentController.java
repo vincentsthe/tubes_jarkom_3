@@ -876,6 +876,8 @@ public class FXMLDocumentController implements Initializable {
         label.setText("Hello World!");
     }
     
+    List<List<Boolean>> marked;
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -886,6 +888,14 @@ public class FXMLDocumentController implements Initializable {
         BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT);
         GridPane.setBackground(new Background(myGP));
         
+        
+        marked = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            marked.add(new ArrayList<>());
+            for (int j = 0; j < 20; j++) {
+                marked.get(i).add(false);
+            }
+        }
         
         myId = 1;
         turn = 1;
@@ -991,7 +1001,8 @@ public class FXMLDocumentController implements Initializable {
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
                     int playerNumber = board.getTileAtPosition(i, j);
-                    if (playerNumber != -1) {
+                    if ((playerNumber != -1) && (marked.get(i).get(j) == false)) {
+                        marked.get(i).set(j, true);
                         Label label = new Label();
                         Pair<Integer,Integer> checkFilled = new Pair(1, 3);
 
