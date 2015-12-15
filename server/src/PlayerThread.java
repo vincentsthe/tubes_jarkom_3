@@ -146,6 +146,7 @@ public class PlayerThread extends Thread {
                     JSONObject json = new JSONObject();
                     json.put("message_type", "board");
                     json.put("message", boardJson);
+                    json.put("turn", game.getCurrentPlayer());
 
                     sendMessage(json.toString());
                 } else {

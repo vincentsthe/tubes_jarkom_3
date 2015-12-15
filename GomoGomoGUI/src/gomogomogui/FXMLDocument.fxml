@@ -475,9 +475,9 @@
             <Font size="25.0" />
          </font>
       </Text>
-      <Label fx:id="nowTurn" layoutX="806.0" layoutY="296.0" prefHeight="50.0" prefWidth="88.0" textFill="#2200ff">
+      <Label fx:id="nowTurn" layoutX="770.0" layoutY="315.0" prefHeight="50.0" prefWidth="120.0" textFill="#2200ff">
          <font>
-            <Font size="30.0" />
+            <Font size="18.0" />
          </font></Label>
       <Button layoutX="25.0" layoutY="14.0" mnemonicParsing="false" text="Back To Menu" />
       <Text fill="#1100ff" layoutX="691.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room's Name : ">

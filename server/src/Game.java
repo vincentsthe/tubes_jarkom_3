@@ -55,6 +55,10 @@ public class Game {
         }
     }
 
+    public String getCurrentPlayer() {
+        return playerList.get(currentTurn).getUsername();
+    }
+
     public boolean haveWinner() {
         return (board.getConsecutiveBid(winCount) != -1);
     }

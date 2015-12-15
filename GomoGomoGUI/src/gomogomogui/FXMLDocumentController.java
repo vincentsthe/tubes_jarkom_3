@@ -970,6 +970,13 @@ public class FXMLDocumentController implements Initializable {
                         if (jsonResponse.getString("message_type").equals("board")) {
                             Gson gson = new Gson();
                             Board board = gson.fromJson(new JSONObject(response).get("message").toString(), Board.class);
+                            Platform.runLater(() -> {
+                                try {
+                                    nowTurn.setText(jsonResponse.getString("turn"));
+                                } catch (Exception e) {
+                                    
+                                }
+                            });
 
                             updateBoard(board);
                         } else if (jsonResponse.getString("message_type").equals("winner") && !done) {
